@@ -7,19 +7,17 @@ document.addEventListener('DOMContentLoaded', function() {
   const charCounterEl = document.getElementById('charCounter');
   const MAX_CHARS = 500;
 
-  // Display current UTC date/time
+  /**
+   * Updates the displayed date/time with current local time
+   */
   function updateDateTime() {
     const now = new Date();
-    const year = now.getUTCFullYear();
-    const month = String(now.getUTCMonth() + 1).padStart(2, '0');
-    const day = String(now.getUTCDate()).padStart(2, '0');
-    const hours = String(now.getUTCHours()).padStart(2, '0');
-    const minutes = String(now.getUTCMinutes()).padStart(2, '0');
-    const seconds = String(now.getUTCSeconds()).padStart(2, '0');
-    dateTimeEl.textContent = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    dateTimeEl.textContent = formatNaturalDate(now);
   }
   
-  // Update character counter and enforce limit
+  /**
+   * Updates the character counter display and enforces character limit
+   */
   function updateCharCounter() {
     const length = noteInput.value.length;
     charCounterEl.textContent = `${length}/${MAX_CHARS} characters`;
@@ -57,7 +55,9 @@ document.addEventListener('DOMContentLoaded', function() {
     updateCharCounter();
   });
 
-  // Save note function
+  /**
+   * Saves the current note to Chrome storage
+   */
   function saveNote() {
     const noteText = noteInput.value.trim();
     if (noteText && noteText.length <= MAX_CHARS) {

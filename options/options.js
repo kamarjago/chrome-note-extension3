@@ -4,7 +4,9 @@ document.addEventListener('DOMContentLoaded', function() {
   const emptyState = document.getElementById('emptyState');
   const clearAllBtn = document.getElementById('clearAllBtn');
 
-  // Load and display all notes
+  /**
+   * Loads and displays all notes from Chrome storage
+   */
   function loadNotes() {
     chrome.storage.sync.get(['notes'], function(result) {
       const notes = result.notes || [];
@@ -19,7 +21,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Display notes in the list
+  /**
+   * Displays notes in the list
+   * @param {Array} notes - Array of note objects to display
+   */
   function displayNotes(notes) {
     notesList.innerHTML = '';
     
@@ -32,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
       
       const timestamp = document.createElement('span');
       timestamp.className = 'note-timestamp';
-      timestamp.textContent = new Date(note.timestamp).toLocaleString();
+      timestamp.textContent = formatNaturalDate(new Date(note.timestamp));
       
       const deleteBtn = document.createElement('button');
       deleteBtn.className = 'note-delete';
@@ -54,7 +59,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Delete a specific note
+  /**
+   * Deletes a specific note from storage
+   * @param {number} noteId - The ID of the note to delete
+   */
   function deleteNote(noteId) {
     chrome.storage.sync.get(['notes'], function(result) {
       const notes = result.notes || [];
