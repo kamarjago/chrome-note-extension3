@@ -1,0 +1,30 @@
+# Node modules
+node_modules/
+
+# Build artifacts
+dist/
+build/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.log
+
+# Package files (if using npm)
+package-lock.json
+yarn.lock
+
+# Chrome extension specific
+*.pem
+*.crx
+*.zip
