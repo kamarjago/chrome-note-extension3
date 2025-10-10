@@ -7,19 +7,51 @@ document.addEventListener('DOMContentLoaded', function() {
   const charCounterEl = document.getElementById('charCounter');
   const MAX_CHARS = 500;
 
-  // Display current UTC date/time
+  /**
+   * Formats a date object into natural language format
+   * @param {Date} date - The date object to format
+   * @returns {string} Formatted date string (e.g., "Monday, January 1st, 2025 - 3:45 pm")
+   */
+  function formatNaturalDate(date) {
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                    'July', 'August', 'September', 'October', 'November', 'December'];
+    
+    const dayOfWeek = days[date.getDay()];
+    const month = months[date.getMonth()];
+    const day = date.getDate();
+    const year = date.getFullYear();
+    
+    // Get ordinal suffix
+    let suffix = 'th';
+    if (day === 1 || day === 21 || day === 31) {
+      suffix = 'st';
+    } else if (day === 2 || day === 22) {
+      suffix = 'nd';
+    } else if (day === 3 || day === 23) {
+      suffix = 'rd';
+    }
+    
+    // Format time
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12 || 12;
+    
+    return `${dayOfWeek}, ${month} ${day}${suffix}, ${year} - ${hours}:${minutes} ${ampm}`;
+  }
+
+  /**
+   * Updates the displayed date/time with current local time
+   */
   function updateDateTime() {
     const now = new Date();
-    const year = now.getUTCFullYear();
-    const month = String(now.getUTCMonth() + 1).padStart(2, '0');
-    const day = String(now.getUTCDate()).padStart(2, '0');
-    const hours = String(now.getUTCHours()).padStart(2, '0');
-    const minutes = String(now.getUTCMinutes()).padStart(2, '0');
-    const seconds = String(now.getUTCSeconds()).padStart(2, '0');
-    dateTimeEl.textContent = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    dateTimeEl.textContent = formatNaturalDate(now);
   }
   
-  // Update character counter and enforce limit
+  /**
+   * Updates the character counter display and enforces character limit
+   */
   function updateCharCounter() {
     const length = noteInput.value.length;
     charCounterEl.textContent = `${length}/${MAX_CHARS} characters`;
@@ -57,7 +89,9 @@ document.addEventListener('DOMContentLoaded', function() {
     updateCharCounter();
   });
 
-  // Save note function
+  /**
+   * Saves the current note to Chrome storage
+   */
   function saveNote() {
     const noteText = noteInput.value.trim();
     if (noteText && noteText.length <= MAX_CHARS) {
